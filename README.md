@@ -29,6 +29,14 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Admin password setup
+
+This project uses `ADMIN_PASSWORD` to protect the admin panel.
+
+1. Create a local `.env` file from `.env.example`.
+2. Set `ADMIN_PASSWORD` to your secure admin password.
+3. In Vercel, add the same environment variable to your project settings.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

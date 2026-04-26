@@ -3,7 +3,9 @@ export default function Home() {
     <div className="container mx-auto px-4 py-12 relative z-10">
       <section className="text-center mb-16 relative">
         <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-        <h1 className="text-5xl font-bold mb-6 neon-glow">✦ Metal Style ✦</h1>
+        <img src="/logo.svg" alt="Metal Style Logo" className="mx-auto mb-6 w-48 md:w-56" />
+        <h1 className="text-5xl font-bold mb-4 neon-glow">✦ Metal Style ✦</h1>
+        <p className="text-cyan-300 mb-4 text-sm uppercase tracking-[0.35em]">artisan metalwork</p>
         <svg className="w-32 h-32 mx-auto mb-6 opacity-60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
           <path d="M50 10 Q60 25 70 30 Q60 35 50 40 Q40 35 30 30 Q40 25 50 10" fill="none" stroke="currentColor" strokeWidth="1.5"/>
           <path d="M50 60 Q65 70 75 75 Q65 80 50 85 Q35 80 25 75 Q35 70 50 60" fill="none" stroke="currentColor" strokeWidth="1.5"/>

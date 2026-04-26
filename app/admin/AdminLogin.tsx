@@ -6,6 +6,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -41,13 +42,22 @@ export default function AdminLogin() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block text-cyan-200">
             Пароль
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="mt-2 w-full rounded-2xl border border-cyan-500/20 bg-slate-950/80 px-4 py-3 text-cyan-100 outline-none focus:border-cyan-400"
-              placeholder="Ваш секретний пароль"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="mt-2 w-full rounded-2xl border border-cyan-500/20 bg-slate-950/80 px-4 py-3 text-cyan-100 outline-none focus:border-cyan-400 pr-12"
+                placeholder="Ваш секретний пароль"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-cyan-400 hover:text-cyan-200 transition"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
           </label>
           {error && <p className="text-red-400">{error}</p>}
           <button

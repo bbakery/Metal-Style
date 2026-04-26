@@ -7,14 +7,14 @@ export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
   const body = await request.json();
   const password = body?.password;
-  const adminPassword = process.env.ADMIN_PASSWORD?.trim();
+  const adminPassword = process.env.ADMIN_PASSWORD?.trim() || process.env.ADMIN_PASS?.trim();
 
   if (!adminPassword) {
     return NextResponse.json(
       {
         success: false,
         message:
-          "Сервер не налаштовано для захищеного входу. Додайте ADMIN_PASSWORD у Vercel Environment Variables і зробіть Redeploy.",
+          "Сервер не налаштовано для захищеного входу. Додайте ADMIN_PASSWORD (або ADMIN_PASS) у Vercel Environment Variables і зробіть Redeploy.",
       },
       { status: 500 }
     );

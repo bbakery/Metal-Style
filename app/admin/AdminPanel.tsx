@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { CATEGORY_LABEL, Product, ProductCategory, ProductStatus, defaultProducts } from "../data/products";
 
-const STORAGE_KEY = "metal-style-products";
 const STATUS_LABEL: Record<ProductStatus, string> = {
   inStock: "В наявності",
   madeToOrder: "Під замовлення",
@@ -52,27 +51,51 @@ export default function AdminPanel() {
   const [products, setProducts] = useState<Product[]>([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [draggedImageIndexByProduct, setDraggedImageIndexByProduct] = useState<Record<number, number | null>>({});
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored) {
+    async function loadProducts() {
       try {
-        const parsed = JSON.parse(stored) as Product[];
-        setProducts(parsed.map(normalizeProduct));
+        const response = await fetch("/api/products", { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error("Не вдалося завантажити товари");
+        }
+        const data = (await response.json()) as { products: Product[] };
+        setProducts(data.products.map(normalizeProduct));
       } catch {
         setProducts(defaultProducts.map(normalizeProduct));
+        setMessage("Не вдалося завантажити товари з сервера. Показано локальні дані.");
+        setTimeout(() => setMessage(""), 4000);
       }
-    } else {
-      setProducts(defaultProducts.map(normalizeProduct));
     }
+    loadProducts();
   }, []);
 
-  function saveProducts(updated: Product[]) {
+  async function saveProducts(updated: Product[]) {
     setProducts(updated);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    setMessage("Зміни опубліковано в каталозі");
-    setTimeout(() => setMessage(""), 3000);
+    setSaving(true);
+    try {
+      const response = await fetch("/api/products", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ products: updated }),
+      });
+      const result = (await response.json()) as { success: boolean; message?: string; products?: Product[] };
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Помилка збереження");
+      }
+      if (result.products) {
+        setProducts(result.products.map(normalizeProduct));
+      }
+      setMessage("Зміни опубліковано в каталозі для всіх пристроїв");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Невідома помилка";
+      setMessage(`Не вдалося зберегти: ${errorMessage}`);
+    } finally {
+      setSaving(false);
+      setTimeout(() => setMessage(""), 3500);
+    }
   }
 
   function updateProduct(id: number, updates: Partial<Product>) {
@@ -243,9 +266,10 @@ export default function AdminPanel() {
               <button
                 type="button"
                 onClick={() => saveProducts(products)}
+                disabled={saving}
                 className="rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 px-4 py-2 text-sm font-semibold text-black hover:brightness-110"
               >
-                Зберегти цей стан
+                {saving ? "Збереження..." : "Зберегти цей стан"}
               </button>
             </div>
             {(() => {
@@ -473,9 +497,10 @@ export default function AdminPanel() {
         <button
           type="button"
           onClick={() => saveProducts(products)}
+          disabled={saving}
           className="rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-500 px-6 py-3 text-black font-semibold shadow-lg shadow-cyan-500/20 hover:brightness-110 transition"
         >
-          Опублікувати зміни в каталозі
+          {saving ? "Збереження..." : "Опублікувати зміни в каталозі"}
         </button>
         {message && <p className="text-lime-300">{message}</p>}
       </div>

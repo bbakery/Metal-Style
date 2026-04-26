@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CATEGORY_LABEL, defaultProducts, Product, ProductCategory } from "../data/products";
 
-const STORAGE_KEY = "metal-style-products";
-
 function getProductImages(product: Product): string[] {
   if (product.images && product.images.length > 0) {
     return product.images;
@@ -50,27 +48,31 @@ export default function Catalog() {
   const [selectedModalImageIndex, setSelectedModalImageIndex] = useState(0);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        setProducts((JSON.parse(stored) as Product[]).map(normalizeProduct));
-      } catch {
-        setProducts(defaultProducts.map(normalizeProduct));
-      }
-    }
+    let isActive = true;
 
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key === STORAGE_KEY && event.newValue) {
-        try {
-          setProducts((JSON.parse(event.newValue) as Product[]).map(normalizeProduct));
-        } catch {
+    async function loadProducts() {
+      try {
+        const response = await fetch("/api/products", { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error("Failed to load");
+        }
+        const data = (await response.json()) as { products: Product[] };
+        if (isActive) {
+          setProducts(data.products.map(normalizeProduct));
+        }
+      } catch {
+        if (isActive) {
           setProducts(defaultProducts.map(normalizeProduct));
         }
       }
-    };
+    }
 
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
+    loadProducts();
+    const intervalId = window.setInterval(loadProducts, 30000);
+    return () => {
+      isActive = false;
+      window.clearInterval(intervalId);
+    };
   }, []);
 
   const filteredProducts = useMemo(() => {

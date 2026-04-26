@@ -41,6 +41,18 @@ This project uses `ADMIN_PASSWORD` (or legacy `ADMIN_PASS`) to protect the admin
    - Supported variable names on the server: `ADMIN_PASSWORD`, `ADMIN_PASS`
 4. After updating environment variables in Vercel, run a redeploy so the new value is applied.
 
+## Shared products storage (all devices)
+
+Products are now saved through `/api/products` and should be backed by Vercel KV / Upstash Redis in production.
+
+1. In Vercel, open your project and add a Redis integration (Upstash Redis).
+2. Confirm the project has these environment variables:
+   - `KV_REST_API_URL`
+   - `KV_REST_API_TOKEN`
+3. Redeploy the project after adding the variables.
+
+Without KV variables, the app falls back to in-memory storage (good for local testing, not persistent across deploys).
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

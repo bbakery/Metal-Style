@@ -1,0 +1,12 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#ffffff" />
+  <rect x="90" y="160" width="220" height="70" rx="18" fill="#f8fafc" stroke="#334155" stroke-width="10" />
+  <line x1="100" y1="180" x2="300" y2="180" stroke="#475569" stroke-width="8" />
+  <line x1="100" y1="200" x2="300" y2="200" stroke="#475569" stroke-width="8" />
+  <line x1="100" y1="220" x2="300" y2="220" stroke="#475569" stroke-width="8" />
+  <rect x="110" y="230" width="180" height="20" rx="10" fill="#cbd5e1" />
+  <path d="M140 120 C140 95 260 95 260 120" fill="#e2e8f0" stroke="#475569" stroke-width="10" />
+  <line x1="140" y1="120" x2="140" y2="160" stroke="#475569" stroke-width="10" />
+  <line x1="260" y1="120" x2="260" y2="160" stroke="#475569" stroke-width="10" />
+  <text x="200" y="286" text-anchor="middle" fill="#0f172a" font-size="18" font-family="Arial">Мангал з металу</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#ffffff" />
+  <path d="M200 70 L200 140" stroke="#1f2937" stroke-width="12" />
+  <ellipse cx="200" cy="190" rx="60" ry="40" fill="#f8fafc" stroke="#334155" stroke-width="10" />
+  <path d="M170 190 C180 210 220 210 230 190" fill="#e2e8f0" />
+  <path d="M175 190 L175 220" stroke="#475569" stroke-width="6" />
+  <path d="M225 190 L225 220" stroke="#475569" stroke-width="6" />
+  <rect x="196" y="54" width="8" height="24" fill="#334155" />
+  <text x="200" y="286" text-anchor="middle" fill="#0f172a" font-size="18" font-family="Arial">Ковані світильники</text>
+</svg>

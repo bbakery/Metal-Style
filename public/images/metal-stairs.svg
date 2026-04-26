@@ -1,0 +1,11 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#ffffff" />
+  <path d="M80 200 H320" stroke="#1f2937" stroke-width="12" />
+  <path d="M100 170 H300" stroke="#1f2937" stroke-width="12" />
+  <path d="M120 140 H280" stroke="#1f2937" stroke-width="12" />
+  <path d="M140 110 H260" stroke="#1f2937" stroke-width="12" />
+  <line x1="90" y1="212" x2="90" y2="90" stroke="#4b5563" stroke-width="14" />
+  <line x1="310" y1="212" x2="310" y2="90" stroke="#4b5563" stroke-width="14" />
+  <rect x="86" y="86" width="228" height="12" fill="#475569" />
+  <text x="200" y="286" text-anchor="middle" fill="#0f172a" font-size="18" font-family="Arial">Металеві сходи</text>
+</svg>

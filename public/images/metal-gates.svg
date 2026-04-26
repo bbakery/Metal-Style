@@ -1,0 +1,11 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#ffffff" />
+  <rect x="72" y="80" width="108" height="160" rx="16" fill="#f8fafc" stroke="#1f2937" stroke-width="10" />
+  <rect x="220" y="80" width="108" height="160" rx="16" fill="#f8fafc" stroke="#1f2937" stroke-width="10" />
+  <path d="M112 80 L150 50 L250 50 L288 80" fill="#e2e8f0" stroke="#475569" stroke-width="10" />
+  <line x1="132" y1="120" x2="132" y2="200" stroke="#334155" stroke-width="8" />
+  <line x1="268" y1="120" x2="268" y2="200" stroke="#334155" stroke-width="8" />
+  <circle cx="184" cy="150" r="10" fill="#475569" />
+  <circle cx="216" cy="150" r="10" fill="#475569" />
+  <text x="200" y="286" text-anchor="middle" fill="#0f172a" font-size="18" font-family="Arial">Металеві ворота</text>
+</svg>

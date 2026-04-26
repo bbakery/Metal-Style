@@ -1,0 +1,10 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#ffffff" />
+  <path d="M80 70 C120 40 180 40 220 70" fill="none" stroke="#1f2937" stroke-width="14" stroke-linecap="round" />
+  <path d="M140 140 C180 110 240 110 280 140" fill="none" stroke="#1f2937" stroke-width="14" stroke-linecap="round" />
+  <path d="M94 70 L94 240" stroke="#4b5563" stroke-width="12" />
+  <path d="M206 70 L206 240" stroke="#4b5563" stroke-width="12" />
+  <path d="M254 140 L254 240" stroke="#4b5563" stroke-width="12" />
+  <path d="M74 240 H286" stroke="#111827" stroke-width="10" />
+  <text x="200" y="44" text-anchor="middle" fill="#111827" font-size="18" font-family="Arial">Поручні для перил</text>
+</svg>

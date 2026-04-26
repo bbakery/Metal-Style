@@ -1,0 +1,10 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#ffffff" />
+  <path d="M60 160 L340 160 L320 140 C270 100 130 100 80 140 Z" fill="#f8fafc" stroke="#334155" stroke-width="8" />
+  <path d="M90 160 L90 230" stroke="#334155" stroke-width="12" />
+  <path d="M310 160 L310 230" stroke="#334155" stroke-width="12" />
+  <rect x="90" y="210" width="220" height="20" rx="10" fill="#cbd5e1" />
+  <line x1="150" y1="160" x2="150" y2="120" stroke="#475569" stroke-width="10" />
+  <line x1="250" y1="160" x2="250" y2="120" stroke="#475569" stroke-width="10" />
+  <text x="200" y="44" text-anchor="middle" fill="#0f172a" font-size="18" font-family="Arial">Дашок над входом</text>
+</svg>

@@ -15,6 +15,30 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Metal Style - Каталог металоконструкцій",
   description: "Онлайн-каталог виробів з металу: металеві лавки, дашки над входом, поручні для перил, декоративні решітки, металеві ворота, ковані двері, балконні огорожі, металеві сходи, ковані світильники, мангали з металу, металеві столи, ковані стільці, декоративні елементи з металу, художня ковка, інтер'єрні та екстер'єрні конструкції.",
+  metadataBase: new URL("https://metal-style.vercel.app"),
+  openGraph: {
+    title: "Metal Style - Каталог металоконструкцій",
+    description:
+      "Каталог металевих виробів: лавки, ворота, сходи, поручні, декоративні елементи. Виготовлення під замовлення по Україні.",
+    url: "https://metal-style.vercel.app",
+    siteName: "Metal Style",
+    locale: "uk_UA",
+    type: "website",
+    images: [
+      {
+        url: "/logo.svg",
+        width: 1200,
+        height: 630,
+        alt: "Metal Style",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Metal Style - Каталог металоконструкцій",
+    description: "Вироби з художнього металу: від лавок до воріт і сходів.",
+    images: ["/logo.svg"],
+  },
   icons: {
     icon: "/logo.svg",
     shortcut: "/logo.svg",

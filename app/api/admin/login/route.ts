@@ -1,15 +1,21 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   const body = await request.json();
   const password = body?.password;
+  const adminPassword = process.env.ADMIN_PASSWORD?.trim();
 
-  if (!ADMIN_PASSWORD) {
+  if (!adminPassword) {
     return NextResponse.json(
-      { success: false, message: "Сервер не налаштовано для захищеного входу" },
+      {
+        success: false,
+        message:
+          "Сервер не налаштовано для захищеного входу. Додайте ADMIN_PASSWORD у Vercel Environment Variables і зробіть Redeploy.",
+      },
       { status: 500 }
     );
   }
@@ -19,7 +25,7 @@ export async function POST(request: Request) {
   }
 
   const passwordBuffer = Buffer.from(password);
-  const secretBuffer = Buffer.from(ADMIN_PASSWORD);
+  const secretBuffer = Buffer.from(adminPassword);
   const isValid =
     passwordBuffer.length === secretBuffer.length &&
     crypto.timingSafeEqual(passwordBuffer, secretBuffer);

@@ -35,7 +35,10 @@ This project uses `ADMIN_PASSWORD` to protect the admin panel.
 
 1. Create a local `.env` file from `.env.example`.
 2. Set `ADMIN_PASSWORD` to your secure admin password.
+   - If the password contains special symbols like `#`, `$`, or `!`, wrap it in quotes:
+   - `ADMIN_PASSWORD="your-secure-password"`
 3. In Vercel, add the same environment variable to your project settings.
+4. After updating environment variables in Vercel, run a redeploy so the new value is applied.
 
 ## Deploy on Vercel
 

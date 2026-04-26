@@ -7,8 +7,6 @@ export async function POST(request: Request) {
   const body = await request.json();
   const password = body?.password;
 
-  console.log('ADMIN_PASSWORD from env:', process.env.ADMIN_PASSWORD);
-
   if (!ADMIN_PASSWORD) {
     return NextResponse.json(
       { success: false, message: "Сервер не налаштовано для захищеного входу" },
@@ -25,9 +23,6 @@ export async function POST(request: Request) {
   const isValid =
     passwordBuffer.length === secretBuffer.length &&
     crypto.timingSafeEqual(passwordBuffer, secretBuffer);
-
-  console.log('Password lengths:', passwordBuffer.length, secretBuffer.length);
-  console.log('Is valid:', isValid);
 
   if (!isValid) {
     return NextResponse.json({ success: false, message: "Невірний пароль" }, { status: 401 });

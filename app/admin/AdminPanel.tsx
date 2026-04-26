@@ -84,7 +84,6 @@ export default function AdminPanel() {
   function addProduct() {
     const nextId = products.length > 0 ? Math.max(...products.map((item) => item.id)) + 1 : 1;
     setProducts((current) => [
-      ...current,
       {
         id: nextId,
         name: "Новий товар",
@@ -100,7 +99,27 @@ export default function AdminPanel() {
         seoTitle: "Новий товар - Metal Style",
         seoDescription: "Опис нового виробу",
       },
+      ...current,
     ]);
+    setMessage("Новий товар додано на початок списку.");
+    setTimeout(() => setMessage(""), 2500);
+  }
+
+  function moveProduct(id: number, direction: "up" | "down") {
+    setProducts((current) => {
+      const index = current.findIndex((product) => product.id === id);
+      if (index < 0) {
+        return current;
+      }
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+      if (targetIndex < 0 || targetIndex >= current.length) {
+        return current;
+      }
+      const next = [...current];
+      const [moved] = next.splice(index, 1);
+      next.splice(targetIndex, 0, moved);
+      return next;
+    });
   }
 
   function removeProduct(id: number) {
@@ -122,6 +141,8 @@ export default function AdminPanel() {
         return { ...product, image: mergedImages[0], images: mergedImages };
       })
     );
+    setMessage(`Додано фото: ${dataUrls.length}. Не забудьте натиснути "Опублікувати зміни в каталозі".`);
+    setTimeout(() => setMessage(""), 4000);
   }
 
   function removeProductImage(id: number, imageIndex: number) {
@@ -202,6 +223,31 @@ export default function AdminPanel() {
       <div className="space-y-8">
         {products.map((product) => (
           <section key={product.id} className="glass-panel rounded-[2rem] border border-cyan-500/15 p-6 shadow-[0_0_40px_rgba(0,255,255,0.08)]">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => moveProduct(product.id, "up")}
+                  className="rounded-xl border border-cyan-500/30 bg-black/40 px-3 py-2 text-sm text-cyan-100 hover:bg-black/60"
+                >
+                  ↑ Вище
+                </button>
+                <button
+                  type="button"
+                  onClick={() => moveProduct(product.id, "down")}
+                  className="rounded-xl border border-cyan-500/30 bg-black/40 px-3 py-2 text-sm text-cyan-100 hover:bg-black/60"
+                >
+                  ↓ Нижче
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={() => saveProducts(products)}
+                className="rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 px-4 py-2 text-sm font-semibold text-black hover:brightness-110"
+              >
+                Зберегти цей стан
+              </button>
+            </div>
             {(() => {
               const productImages = getProductImages(product);
               return (
@@ -284,6 +330,9 @@ export default function AdminPanel() {
                       }
                     }}
                   />
+                  <p className="mt-2 text-xs text-cyan-300/70">
+                    Виберіть кілька файлів одразу (утримуйте Ctrl або Shift у вікні вибору файлів).
+                  </p>
                 </label>
               </div>
 

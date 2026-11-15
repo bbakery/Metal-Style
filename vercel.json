@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/catalog", "destination": "/#catalog", "permanent": false },
+    { "source": "/contacts", "destination": "/", "permanent": false },
+    { "source": "/about", "destination": "/", "permanent": false },
+    { "source": "/admin", "destination": "/", "permanent": false }
+  ]
+}

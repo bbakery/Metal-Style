@@ -1,60 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Metal Style: каталог з синхронізацією Facebook
 
-## Getting Started
+Сайт підтягує пости з вашої Facebook-сторінки (GoodNiceCompany) і показує їх як товари.
+Додатково можна вручну додавати товари й ідеї у файлі `public/products.json`.
 
-First, run the development server:
+## Як це працює
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Назва товару: перший рядок поста.
+- Опис: решта тексту без хештегів.
+- Ціна: береться з тексту, якщо є число з «грн» або «₴» (наприклад «4500 грн»). Якщо немає, показується «Ціна договірна».
+- Категорія: визначається за словами в тексті («лавка», «мангал», «поручні» тощо), інакше «Інше».
+- Фото: з поста (якщо в пості кілька фото, беруться всі).
+- Пост без фото не потрапляє на сайт. Пост із хештегом `#не_в_каталог` теж пропускається.
+- Оновлення: Vercel кешує відповідь на 15 хвилин, тож новий пост з'являється на сайті приблизно за 15 хвилин.
+
+## Розгортання на Vercel
+
+1. Створіть репозиторій на GitHub і завантажте туди вміст цієї папки.
+2. На vercel.com натисніть Add New → Project, виберіть репозиторій і Deploy. Налаштування не змінюйте.
+3. Сайт запрацює одразу, з товарами з `public/products.json`. Для Facebook виконайте наступний розділ.
+
+## Підключення Facebook
+
+Потрібні адміністраторські права на сторінку GoodNiceCompany.
+
+1. Відкрийте developers.facebook.com, створіть застосунок (тип Business) і додайте продукт Facebook Login for Business або просто використовуйте Graph API Explorer.
+2. У Graph API Explorer виберіть свій застосунок, тип токена User Token і додайте дозволи `pages_show_list`, `pages_read_engagement`. Натисніть Generate Access Token.
+3. Виконайте запит `me/accounts`. У відповіді знайдіть свою сторінку: там будуть `id` (це FB_PAGE_ID) і `access_token` (токен сторінки).
+4. Щоб токен не діяв лише кілька годин, зробіть його довгим: у розділі Access Token Tool (або запитом `oauth/access_token?grant_type=fb_exchange_token`) обміняйте токен користувача на довгий, потім знову виконайте `me/accounts`. Токен сторінки, отриманий з довгого токена користувача, не має терміну дії.
+5. У Vercel відкрийте проєкт → Settings → Environment Variables і додайте:
+   - `FB_PAGE_ID`: id сторінки
+   - `FB_PAGE_TOKEN`: токен сторінки
+   - (необов'язково) `CATALOG_HASHTAG`: наприклад `#товар`, тоді на сайт потраплятимуть лише пости з цим хештегом
+6. Натисніть Redeploy. Перевірте адресу `https://ваш-сайт.vercel.app/api/products`: там має бути список товарів. Якщо помилка, у полі `error` буде її текст.
+
+Якщо Meta попросить перевірку застосунку (App Review), для читання власної сторінки зазвичай достатньо режиму розробки, поки ви є адміністратором застосунку.
+
+## Додати товар вручну
+
+Відкрийте `public/products.json` і додайте об'єкт у список `products`:
+
+```json
+{
+  "id": "my_bench_1",
+  "name": "Лавка з кованими підлокітниками",
+  "cat": "Лавки",
+  "avail": "Під замовлення",
+  "price": "",
+  "desc": "Розміри, матеріал, колір.",
+  "photos": ["/photos/bench1.jpg"],
+  "link": "https://www.instagram.com/p/XXXX/",
+  "linkLabel": "Пост в Instagram",
+  "at": 1760000000000
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Фото кладіть у папку `public/photos/`. Порожня `price` означає «Ціна договірна». Поле `at` задає порядок (більше число = вище). Статус `Ідея` позначає ескіз.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## TikTok
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+TikTok не дає автоматично отримати список ваших відео без окремого схвалення API. Тому простий шлях: відкрийте файл `data/tiktok.json` і вставте посилання на потрібні відео зі сторінки @gordinzar:
 
-## Learn More
+```json
+{ "videos": ["https://www.tiktok.com/@gordinzar/video/1234567890"] }
+```
 
-To learn more about Next.js, take a look at the following resources:
+Сайт сам візьме з кожного посилання обкладинку та підпис (через публічний oEmbed TikTok), і відео з'явиться в каталозі з позначкою «Відео» та кнопкою переходу в TikTok. Цю частину я не міг перевірити без доступу до TikTok, тож після розгортання відкрийте `/api/products` і переконайтеся, що відео є в списку.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Відео з Facebook-постів теж потрапляють на сайт: показується обкладинка з позначкою «Відео» і кнопка переходу на оригінальний пост.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Instagram
 
-## Admin password setup
+Не підключено. Для Instagram потрібен бізнес-акаунт, прив'язаний до Facebook-сторінки, і окремий токен Instagram Graph API. Найпростіше публікувати товар в Instagram і Facebook одночасно: тоді пост потрапить на сайт з Facebook.
 
-This project uses `ADMIN_PASSWORD` (or legacy `ADMIN_PASS`) to protect the admin panel.
+## Генератор ескізу для клієнтів
 
-1. Create a local `.env` file from `.env.example`.
-2. Set `ADMIN_PASSWORD` to your secure admin password.
-   - If the password contains special symbols like `#`, `$`, or `!`, wrap it in quotes:
-   - `ADMIN_PASSWORD="your-secure-password"`
-3. In Vercel, add the same environment variable to your project settings.
-   - Supported variable names on the server: `ADMIN_PASSWORD`, `ADMIN_PASS`
-4. After updating environment variables in Vercel, run a redeploy so the new value is applied.
+Блок «Придумайте свій виріб» дозволяє клієнту вибрати тип, стиль, розмір і побажання. Далі він може:
+- натиснути «Згенерувати ескіз»: картинку малює безкоштовний сервіс Pollinations (ключ не потрібен), «Інший варіант» дає нову;
+- відкрити той самий опис у ChatGPT («Відкрити в ChatGPT»);
+- скопіювати промпт і вставити його в будь-який ШІ;
+- надіслати ескіз вам у WhatsApp: у повідомленні буде опис і посилання на картинку.
 
-## Shared products storage (all devices)
+Pollinations безкоштовний, але інколи повільний або недоступний. Тоді сайт показує повідомлення, а кнопки ChatGPT і «Скопіювати промпт» лишаються робочими. Промпт складається англійською в функції `genPrompt()` у `public/app.js`, там можна змінити стилі й формулювання.
 
-Products are now saved through `/api/products` and should be backed by Vercel KV / Upstash Redis in production.
+## Ідеї виробів
 
-1. In Vercel, open your project and add a Redis integration (Upstash Redis).
-2. Confirm the project has these environment variables:
-   - `KV_REST_API_URL`
-   - `KV_REST_API_TOKEN`
-3. Redeploy the project after adding the variables.
-
-Without KV variables, the app falls back to in-memory storage (good for local testing, not persistent across deploys).
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+У `public/products.json` є чотири ескізи-ідеї (лавка, мангал, ліхтар, дашок) зі статусом «Ідея». Це ескізи для натхнення, не готові креслення: розміри орієнтовні. Коли виготовите виріб, замініть ескіз справжнім фото й змініть статус на «Під замовлення».
